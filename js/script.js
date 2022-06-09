@@ -13,27 +13,27 @@ Questo richiederà un minimo di ricerca.
 
 // *DICHIARAZIONE VARIABILI PROGRAMMA*
 // !USER NAME!
-let userName = document.getElementById("user-name").value;
+let userName;
 
 // !USER KMS!
-let userKm = parseInt(document.getElementById("user-kms").value);
+let userKm;
 
 // !USER AGE!
-let userAge = document.getElementById("user-age").value;
+let userAge;
 
 // !TICKET PRICES!
 let pricePerKm = 0.21;
 
-let ticketPrice = userKm * pricePerKm;
+let ticketPrice;
 
 let ticketDiscounted;
 
 // !MORE DATA!
 let ticketType;
 
-let ticketTrain = Math.floor(Math.random() * 10) + 1;
+let ticketTrain;
 
-let ticketCode = Math.floor(Math.random() * 10000) + 1;
+let ticketCode;
 
 // !BUTTONS!
 const formSubmit = document.getElementById("form-button");
@@ -41,28 +41,47 @@ const formSubmit = document.getElementById("form-button");
 const formReset = document.getElementById("form-reset-button");
 
 // *LOGICA PROGRAMMA*
-// !DISCOUNT CONDITIONS!
-if (userAge === "minorenne") {
-    ticketDiscounted = ticketPrice * 0.8;
-    ticketType = "Biglietto Under18";
-} else if (userAge === "over65") {
-    ticketDiscounted = ticketPrice * 0.6;
-    ticketType = "Biglietto over65";
-} else {
-    ticketDiscounted = ticketPrice
-    ticketType = "Biglietto Standard";
-}
+
 
 
 // !FIRST EVENT LISTENER!
 formSubmit.addEventListener("click",
     function () {
-        document.querySelector(".ticket-result").classList.add("active");
-        document.querySelector(".user-ticket-name").innerHTML = userName;
-        document.querySelector(".user-ticket-type").innerHTML = ticketType;
-        document.querySelector(".user-ticket-train").innerHTML = ticketTrain;
-        document.querySelector(".user-ticket-code").innerHTML = ticketCode;
-        document.querySelector(".user-ticket-price").innerHTML = `${ticketDiscounted.toFixed(2)}€`;
+        userName = document.getElementById("user-name").value;
+        userKm = parseInt(document.getElementById("user-kms").value);
+        userAge = document.getElementById("user-age").value;
+        ticketPrice = userKm * pricePerKm;
+        ticketTrain = Math.floor(Math.random() * 10) + 1;
+        ticketCode = Math.floor(Math.random() * 100000) + 1;
+
+        // !DISCOUNT CONDITIONS!
+        if (userAge === "minorenne") {
+            ticketDiscounted = ticketPrice * 0.8;
+            ticketType = "Biglietto Under18";
+        } else if (userAge === "over65") {
+            ticketDiscounted = ticketPrice * 0.6;
+            ticketType = "Biglietto over65";
+        } else {
+            ticketDiscounted = ticketPrice;
+            ticketType = "Biglietto Standard";
+        }
+        
+        // !LOGICA PER GENERARE IL TICKET!
+        if (userName.length < 5 || userName.length > 25) {
+            alert("il nome inserito non è corretto, il nome non può contenere meno di 5 caratteri o più di 25!");
+        } else if (isNaN(userKm)) {
+            alert("numero chilometri inserito in modo errato!");
+        } else if (userAge === "") {
+            alert("selezionare una fascia di età.");
+        } else {
+            // *INSERISCO I DATI OTTENUTI DALL'UTENTE NEL DOM*
+            document.querySelector(".ticket-result").classList.add("active");
+            document.querySelector(".user-ticket-name").innerHTML = userName;
+            document.querySelector(".user-ticket-type").innerHTML = ticketType;
+            document.querySelector(".user-ticket-train").innerHTML = ticketTrain;
+            document.querySelector(".user-ticket-code").innerHTML = ticketCode;
+            document.querySelector(".user-ticket-price").innerHTML = `${ticketDiscounted.toFixed(2)}€`;
+        }
     }
 )
 
